@@ -1,7 +1,5 @@
 package com.umasuo.feedback;
 
-import com.umasuo.report.infrastructure.config.DateConfig;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,7 +39,6 @@ public class Application {
    */
   @GetMapping("/")
   public String index() {
-    LOG.info("Zone: {}.", DateConfig.zoneId);
     return serviceName + ", system time: " + System.currentTimeMillis();
   }
 
