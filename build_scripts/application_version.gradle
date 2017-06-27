@@ -1,0 +1,4 @@
+jar {
+    baseName = 'feedback'
+    version = '0.1'
+}
