@@ -9,7 +9,7 @@ import com.umasuo.feedback.domain.model.Feedback;
 import com.umasuo.feedback.domain.service.FeedbackService;
 import com.umasuo.feedback.infrastructure.enums.FeedbackStatus;
 import com.umasuo.feedback.infrastructure.enums.FeedbackType;
-import com.umasuo.report.infrastructure.Router;
+import com.umasuo.feedback.infrastructure.Router;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
