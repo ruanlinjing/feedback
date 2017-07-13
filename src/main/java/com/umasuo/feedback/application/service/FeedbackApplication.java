@@ -9,6 +9,7 @@ import com.umasuo.feedback.domain.service.FeedbackService;
 import com.umasuo.feedback.infrastructure.enums.FeedbackStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -21,6 +22,7 @@ public class FeedbackApplication {
 
   private static final Logger logger = LoggerFactory.getLogger(FeedbackApplication.class);
 
+  @Autowired
   private transient FeedbackService service;
 
   @Transactional

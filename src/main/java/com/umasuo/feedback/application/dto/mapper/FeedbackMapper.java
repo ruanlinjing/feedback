@@ -29,6 +29,7 @@ public class FeedbackMapper {
     view.setDeveloperStatus(feedback.getDeveloperStatus());
     view.setUserStatus(feedback.getUserStatus());
     view.setTitle(feedback.getTitle());
+    view.setType(feedback.getType());
     view.setEmail(feedback.getEmail());
     view.setPhone(feedback.getPhone());
 

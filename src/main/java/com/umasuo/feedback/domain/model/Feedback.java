@@ -14,6 +14,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -55,7 +57,7 @@ public class Feedback {
   private Long lastModifiedAt;
 
   @Version
-  private long version;
+  private Long version;
 
   /**
    * 用户ID.
@@ -85,6 +87,7 @@ public class Feedback {
   /**
    * 反馈种类：感谢类，疑问类，错误类，投诉类等
    */
+  @Enumerated(EnumType.STRING)
   private FeedbackType type;
 
   @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
