@@ -13,12 +13,6 @@ import javax.validation.constraints.NotNull;
 @Data
 public class FeedbackDraft {
 
-  @NotNull
-  private String userId;
-
-  @NotNull
-  private String developerId;
-
   private String deviceId;
 
   private String title;

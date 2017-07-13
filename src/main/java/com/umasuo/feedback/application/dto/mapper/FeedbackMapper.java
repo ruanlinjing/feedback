@@ -45,10 +45,10 @@ public class FeedbackMapper {
     return list;
   }
 
-  public static Feedback toEntity(FeedbackDraft draft) {
+  public static Feedback toEntity(String userId, String developerId, FeedbackDraft draft) {
     Feedback feedback = new Feedback();
-    feedback.setUserId(draft.getUserId());
-    feedback.setDeveloperId(draft.getDeveloperId());
+    feedback.setUserId(userId);
+    feedback.setDeveloperId(developerId);
     feedback.setDeviceId(draft.getDeviceId());
     feedback.setTitle(draft.getTitle());
     feedback.setPhone(draft.getPhone());

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * Created by umasuo on 17/2/9.
  */
-@SpringBootApplication(scanBasePackages = "com.umasuo")
+@SpringBootApplication(scanBasePackages = "com.umasuo.feedback")
 @EnableAutoConfiguration
 @Configuration
 @RestController

@@ -1,4 +1,4 @@
-package com.umasuo.report.infrastructure.util;
+package com.umasuo.feedback.infrastructure.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;

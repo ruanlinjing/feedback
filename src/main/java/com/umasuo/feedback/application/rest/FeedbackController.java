@@ -79,10 +79,12 @@ public class FeedbackController {
 
 
   @PostMapping(Router.FEEDBACK_ROOT)
-  public void addFeedback(FeedbackDraft draft) {
+  public void addFeedback(@RequestHeader String userId,
+                          @RequestHeader String developerId,
+                          @RequestBody FeedbackDraft draft) {
     logger.info("Enter. draft: {}.", draft);
 
-    feedbackService.save(FeedbackMapper.toEntity(draft));
+    feedbackService.save(FeedbackMapper.toEntity(userId, developerId, draft));
 
     logger.info("Exit.");
   }

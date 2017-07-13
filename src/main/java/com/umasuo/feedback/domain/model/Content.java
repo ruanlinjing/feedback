@@ -3,9 +3,11 @@ package com.umasuo.feedback.domain.model;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -16,6 +18,7 @@ import javax.persistence.Table;
 @Data
 @Entity
 @Table(name = "feedback_content")
+@EntityListeners(AuditingEntityListener.class)
 public class Content {
 
   /**
@@ -34,6 +37,7 @@ public class Content {
   @Column(name = "created_at")
   protected Long createdAt;
 
+  @Column(length = 2048)
   private String content;
 
 }
