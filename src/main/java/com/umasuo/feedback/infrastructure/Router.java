@@ -8,7 +8,7 @@ public class Router {
   /**
    * report root.
    */
-  public static final String FEEDBACK_ROOT = "/feedbacks";
+  public static final String FEEDBACK_ROOT = "/v1/feedbacks";
 
   /**
    * The constant FEEDBACK_WITH_ID.
