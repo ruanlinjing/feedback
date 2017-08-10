@@ -1,5 +1,6 @@
 package com.umasuo.feedback.application.dto.mapper;
 
+import com.google.common.collect.Lists;
 import com.umasuo.feedback.application.dto.FeedbackDraft;
 import com.umasuo.feedback.application.dto.FeedbackView;
 import com.umasuo.feedback.domain.model.Content;
@@ -83,10 +84,8 @@ public final class FeedbackMapper {
     feedback.setEmail(draft.getEmail());
     feedback.setType(draft.getType());
 
-    Content content = new Content();
-    content.setContent(draft.getContent());
-    List<Content> contents = new ArrayList<>();
-    contents.add(content);
+    Content content = new Content(draft.getContent(), userId);
+    List<Content> contents = Lists.newArrayList(content);
     feedback.setContents(contents);
 
     feedback.setUserStatus(FeedbackStatus.VIEWED);
