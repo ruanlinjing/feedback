@@ -47,7 +47,7 @@ public class Content {
    * The owner id, required.
    * Owner maybe user or developer.
    */
-  @Column(nullable = false)
+  @Column
   private String ownerId;
 
   /**
