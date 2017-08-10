@@ -38,7 +38,8 @@ public class FeedbackService {
 
     Feedback feedback = feedbackRepository.findOne(id);
     if (feedback == null) {
-      throw new NotExistException("Feedback not exit: " + id);
+      logger.debug("Feedback: {} not exist.", id);
+      throw new NotExistException("Feedback not exist: " + id);
     }
 
     logger.debug("Exit. feedback: {}.", feedback);

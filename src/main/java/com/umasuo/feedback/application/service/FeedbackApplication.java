@@ -1,5 +1,7 @@
 package com.umasuo.feedback.application.service;
 
+import com.google.common.collect.Lists;
+import com.umasuo.exception.AuthFailedException;
 import com.umasuo.exception.ParametersException;
 import com.umasuo.feedback.application.dto.FeedbackView;
 import com.umasuo.feedback.application.dto.mapper.FeedbackMapper;
@@ -7,6 +9,8 @@ import com.umasuo.feedback.domain.model.Content;
 import com.umasuo.feedback.domain.model.Feedback;
 import com.umasuo.feedback.domain.service.FeedbackService;
 import com.umasuo.feedback.infrastructure.enums.FeedbackStatus;
+
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,26 +33,49 @@ public class FeedbackApplication {
   public FeedbackView addContent(String id, String contentStr, String developerId, String userId) {
     logger.debug("Enter. id: {}, contentStr: {}.", id, contentStr);
 
-    if (developerId == null && userId == null) {
-      throw new ParametersException("Both developer and userId is null.");
-    }
-    
     Feedback feedback = service.get(id);
-    Content content = new Content();
-    content.setContent(contentStr);
-    feedback.getContents().add(content);
 
-    if (developerId == null && userId != null) {
-      feedback.setDeveloperStatus(FeedbackStatus.UNVIEWED);
-      feedback.setUserStatus(FeedbackStatus.VIEWED);
-    } else if (developerId != null && userId == null) {
-      feedback.setDeveloperStatus(FeedbackStatus.UNVIEWED);
-      feedback.setUserStatus(FeedbackStatus.VIEWED);
+    if (StringUtils.isNotBlank(userId)) {
+      addUserContent(id, contentStr, userId, feedback);
+    } else {
+      addDeveloperContent(id, contentStr, developerId, feedback);
     }
 
-    Feedback saved = service.save(feedback);
+    logger.debug("Exit. saved: {}.", feedback);
+    return FeedbackMapper.toView(feedback);
+  }
 
-    logger.debug("Exit. saved: {}.", saved);
-    return FeedbackMapper.toView(saved);
+  private void addDeveloperContent(String id, String contentStr, String developerId,
+      Feedback feedback) {
+    if (!developerId.equals(feedback.getDeveloperId())) {
+      logger.debug("Can not add content to feedback: {} not belong to developer: {}.",
+          id, developerId);
+      throw new AuthFailedException("Feedback not belong to developer");
+    }
+    Content content = new Content(contentStr, developerId);
+    insertContent(feedback, content);
+    feedback.setDeveloperStatus(FeedbackStatus.UNVIEWED);
+    feedback.setUserStatus(FeedbackStatus.VIEWED);
+    service.save(feedback);
+  }
+
+  private void addUserContent(String id, String contentStr, String userId, Feedback feedback) {
+    if (!userId.equals(feedback.getUserId())) {
+      logger.debug("Can not add content to feedback: {} not belong to user: {}.", id, userId);
+      throw new AuthFailedException("Feedback not belong to user");
+    }
+    Content content = new Content(contentStr, userId);
+    insertContent(feedback, content);
+    feedback.setDeveloperStatus(FeedbackStatus.UNVIEWED);
+    feedback.setUserStatus(FeedbackStatus.VIEWED);
+    service.save(feedback);
+  }
+
+  private void insertContent(Feedback feedback, Content content) {
+    if (feedback.getContents() != null) {
+      feedback.getContents().add(content);
+    } else {
+      feedback.setContents(Lists.newArrayList(content));
+    }
   }
 }

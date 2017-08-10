@@ -27,6 +27,9 @@ public class FeedbackView {
    */
   private Long lastModifiedAt;
 
+  /**
+   * The version.
+   */
   private long version;
 
   /**
@@ -59,11 +62,23 @@ public class FeedbackView {
    */
   private FeedbackType type;
 
+  /**
+   * 反馈内容.
+   */
   private List<ContentView> contents;
 
+  /**
+   * The title.
+   */
   private String title;
 
+  /**
+   * The phone.
+   */
   private String phone;
 
+  /**
+   * The email.
+   */
   private String email;
 }

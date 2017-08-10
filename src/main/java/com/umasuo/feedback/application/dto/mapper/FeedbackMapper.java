@@ -5,7 +5,6 @@ import com.umasuo.feedback.application.dto.FeedbackView;
 import com.umasuo.feedback.domain.model.Content;
 import com.umasuo.feedback.domain.model.Feedback;
 import com.umasuo.feedback.infrastructure.enums.FeedbackStatus;
-import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,9 +12,20 @@ import java.util.List;
 /**
  * Created by umasuo on 17/6/27.
  */
-@Data
-public class FeedbackMapper {
+public final class FeedbackMapper {
 
+  /**
+   * Instantiates a new Feedback mapper.
+   */
+  private FeedbackMapper() {
+  }
+
+  /**
+   * Convert Feedback to FeedbackView.
+   *
+   * @param feedback the Feedback
+   * @return the FeedbackView
+   */
   public static FeedbackView toView(Feedback feedback) {
 
     FeedbackView view = new FeedbackView();
@@ -38,16 +48,33 @@ public class FeedbackMapper {
     return view;
   }
 
+  /**
+   * Convert List of Feedback to List of FeedbackView.
+   *
+   * @param feedbackList List of Feedback
+   * @return List of FeedbackView
+   */
   public static List<FeedbackView> toView(List<Feedback> feedbackList) {
     List<FeedbackView> list = new ArrayList<>();
+
     feedbackList.stream().forEach(
         feedback -> list.add(toView(feedback))
     );
+
     return list;
   }
 
+  /**
+   * Convert FeedbackDraft to Feedback.
+   *
+   * @param userId the user id
+   * @param developerId the developer id
+   * @param draft the FeedbackDraft
+   * @return the feedback
+   */
   public static Feedback toEntity(String userId, String developerId, FeedbackDraft draft) {
     Feedback feedback = new Feedback();
+
     feedback.setUserId(userId);
     feedback.setDeveloperId(developerId);
     feedback.setDeviceId(draft.getDeviceId());
@@ -64,6 +91,7 @@ public class FeedbackMapper {
 
     feedback.setUserStatus(FeedbackStatus.VIEWED);
     feedback.setDeveloperStatus(FeedbackStatus.UNVIEWED);
+
     return feedback;
   }
 

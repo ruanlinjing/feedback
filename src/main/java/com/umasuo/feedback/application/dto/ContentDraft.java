@@ -10,6 +10,9 @@ import lombok.Data;
 @Data
 public class ContentDraft {
 
+  /**
+   * The content.
+   */
   private String content;
 
 }

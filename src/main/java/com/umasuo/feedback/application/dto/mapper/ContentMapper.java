@@ -9,8 +9,20 @@ import java.util.List;
 /**
  * Created by umasuo on 17/6/27.
  */
-public class ContentMapper {
+public final class ContentMapper {
 
+  /**
+   * Instantiates a new Content mapper.
+   */
+  private ContentMapper() {
+  }
+
+  /**
+   * Convert Content to ContentView.
+   *
+   * @param content the Content
+   * @return ContentView content view
+   */
   public static ContentView toView(Content content) {
     ContentView view = new ContentView();
     view.setContents(content.getContent());
@@ -18,15 +30,30 @@ public class ContentMapper {
     return view;
   }
 
+  /**
+   * Convent List of Content to List of ContentView.
+   *
+   * @param contentList List of Content
+   * @return List of ContentView
+   */
   public static List<ContentView> toView(List<Content> contentList) {
     List<ContentView> contentViews = new ArrayList<>();
-    contentList.stream().forEach(
-        content -> contentViews.add(toView(content))
-    );
+
+    if (contentList != null) {
+      contentList.stream().forEach(
+          content -> contentViews.add(toView(content))
+      );
+    }
     return contentViews;
   }
 
-  public static Content toEntity(ContentView view) {
+  /**
+   * Convert ContentView to Content.
+   *
+   * @param view the ContentView
+   * @return Content content
+   */
+  public static Content toModel(ContentView view) {
     Content content = new Content();
     content.setContent(view.getContents());
     return content;

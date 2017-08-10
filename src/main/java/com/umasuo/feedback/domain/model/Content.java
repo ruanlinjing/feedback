@@ -37,7 +37,33 @@ public class Content {
   @Column(name = "created_at")
   protected Long createdAt;
 
-  @Column(length = 2048)
+  /**
+   * The content, required.
+   */
+  @Column(length = 2048, nullable = false)
   private String content;
 
+  /**
+   * The owner id, required.
+   * Owner maybe user or developer.
+   */
+  @Column(nullable = false)
+  private String ownerId;
+
+  /**
+   * Instantiates a new Content.
+   */
+  public Content() {
+  }
+
+  /**
+   * Instantiates a new Content.
+   *
+   * @param content the content
+   * @param ownerId the owner id
+   */
+  public Content(String content, String ownerId) {
+    this.content = content;
+    this.ownerId = ownerId;
+  }
 }

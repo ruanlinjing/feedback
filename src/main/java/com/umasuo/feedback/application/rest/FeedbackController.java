@@ -10,6 +10,7 @@ import com.umasuo.feedback.domain.service.FeedbackService;
 import com.umasuo.feedback.infrastructure.Router;
 import com.umasuo.feedback.infrastructure.enums.FeedbackStatus;
 import com.umasuo.feedback.infrastructure.enums.FeedbackType;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +67,7 @@ public class FeedbackController {
     return feedbackViews;
   }
 
-  @GetMapping(value = Router.FEEDBACK_ROOT, headers = "userId")
+  @GetMapping(value = Router.FEEDBACK_ROOT, headers = {"userId", "developerId"})
   public List<FeedbackView> getForUser(@RequestHeader String userId) {
     logger.info("Enter. userId: {}.");
 
@@ -92,7 +93,7 @@ public class FeedbackController {
   @PostMapping(Router.FEEDBACK_WITH_ID)
   public FeedbackView addContent(@PathVariable String id,
                                  @RequestHeader String developerId,
-                                 @RequestHeader String userId,
+                                 @RequestHeader(required = false) String userId,
                                  @RequestBody ContentDraft draft) {
     logger.info("Enter. id: {}, draft: {}.", id, draft);
 
