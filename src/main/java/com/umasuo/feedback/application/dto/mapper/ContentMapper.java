@@ -27,6 +27,7 @@ public final class ContentMapper {
     ContentView view = new ContentView();
     view.setContents(content.getContent());
     view.setCreatedAt(content.getCreatedAt());
+    view.setOwnerId(content.getOwnerId());
     return view;
   }
 
@@ -45,17 +46,5 @@ public final class ContentMapper {
       );
     }
     return contentViews;
-  }
-
-  /**
-   * Convert ContentView to Content.
-   *
-   * @param view the ContentView
-   * @return Content content
-   */
-  public static Content toModel(ContentView view) {
-    Content content = new Content();
-    content.setContent(view.getContents());
-    return content;
   }
 }

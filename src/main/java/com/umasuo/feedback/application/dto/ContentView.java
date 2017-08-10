@@ -18,4 +18,9 @@ public class ContentView {
    */
   private String contents;
 
+  /**
+   * The developerId or userId.
+   */
+  private String ownerId;
+
 }
