@@ -2,7 +2,6 @@ package com.umasuo.feedback.application.service;
 
 import com.google.common.collect.Lists;
 import com.umasuo.exception.AuthFailedException;
-import com.umasuo.exception.ParametersException;
 import com.umasuo.feedback.application.dto.FeedbackView;
 import com.umasuo.feedback.application.dto.mapper.FeedbackMapper;
 import com.umasuo.feedback.domain.model.Content;
@@ -35,47 +34,63 @@ public class FeedbackApplication {
 
     Feedback feedback = service.get(id);
 
-    if (StringUtils.isNotBlank(userId)) {
-      addUserContent(id, contentStr, userId, feedback);
+    if (StringUtils.isBlank(userId)) {
+      addDeveloperContent(contentStr, developerId, feedback);
     } else {
-      addDeveloperContent(id, contentStr, developerId, feedback);
+      addUserContent(contentStr, userId, feedback);
     }
+
+    service.save(feedback);
 
     logger.debug("Exit. saved: {}.", feedback);
     return FeedbackMapper.toView(feedback);
   }
 
-  private void addDeveloperContent(String id, String contentStr, String developerId,
-      Feedback feedback) {
+  private void addDeveloperContent(String contentStr, String developerId, Feedback feedback) {
+    logger.debug("Enter. contentStr: {}, developerId: {}, feedback: {}.",
+        contentStr, developerId, feedback.getId());
+
     if (!developerId.equals(feedback.getDeveloperId())) {
       logger.debug("Can not add content to feedback: {} not belong to developer: {}.",
-          id, developerId);
+          feedback.getId(), developerId);
       throw new AuthFailedException("Feedback not belong to developer");
     }
-    Content content = new Content(contentStr, developerId);
-    insertContent(feedback, content);
-    feedback.setDeveloperStatus(FeedbackStatus.UNVIEWED);
-    feedback.setUserStatus(FeedbackStatus.VIEWED);
-    service.save(feedback);
+
+    insertContent(feedback,  new Content(contentStr, developerId));
+
+    feedback.setDeveloperStatus(FeedbackStatus.VIEWED);
+    feedback.setUserStatus(FeedbackStatus.UNVIEWED);
+
+    logger.debug("Exit.");
   }
 
-  private void addUserContent(String id, String contentStr, String userId, Feedback feedback) {
+  private void addUserContent(String contentStr, String userId, Feedback feedback) {
+    logger.debug("Enter. contentStr: {}, userId: {}, feedback: {}.",
+        contentStr, userId, feedback);
+
     if (!userId.equals(feedback.getUserId())) {
-      logger.debug("Can not add content to feedback: {} not belong to user: {}.", id, userId);
+      logger.debug("Can not add content to feedback: {} not belong to user: {}.",
+          feedback.getId(), userId);
       throw new AuthFailedException("Feedback not belong to user");
     }
-    Content content = new Content(contentStr, userId);
-    insertContent(feedback, content);
+
+    insertContent(feedback,  new Content(contentStr, userId));
+
     feedback.setDeveloperStatus(FeedbackStatus.UNVIEWED);
     feedback.setUserStatus(FeedbackStatus.VIEWED);
-    service.save(feedback);
+
+    logger.debug("Exit.");
   }
 
   private void insertContent(Feedback feedback, Content content) {
+    logger.debug("Enter. feedback: {}, content: {}.", feedback.getId(), content);
+
     if (feedback.getContents() != null) {
       feedback.getContents().add(content);
     } else {
       feedback.setContents(Lists.newArrayList(content));
     }
+
+    logger.debug("Exit.");
   }
 }

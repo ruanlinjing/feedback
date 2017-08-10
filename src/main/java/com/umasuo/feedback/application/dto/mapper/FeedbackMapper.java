@@ -73,7 +73,7 @@ public final class FeedbackMapper {
    * @param draft the FeedbackDraft
    * @return the feedback
    */
-  public static Feedback toEntity(String userId, String developerId, FeedbackDraft draft) {
+  public static Feedback toModel(String userId, String developerId, FeedbackDraft draft) {
     Feedback feedback = new Feedback();
 
     feedback.setUserId(userId);
@@ -85,8 +85,7 @@ public final class FeedbackMapper {
     feedback.setType(draft.getType());
 
     Content content = new Content(draft.getContent(), userId);
-    List<Content> contents = Lists.newArrayList(content);
-    feedback.setContents(contents);
+    feedback.setContents(Lists.newArrayList(content));
 
     feedback.setUserStatus(FeedbackStatus.VIEWED);
     feedback.setDeveloperStatus(FeedbackStatus.UNVIEWED);

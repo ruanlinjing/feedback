@@ -85,7 +85,7 @@ public class FeedbackController {
                           @RequestBody FeedbackDraft draft) {
     logger.info("Enter. draft: {}.", draft);
 
-    feedbackService.save(FeedbackMapper.toEntity(userId, developerId, draft));
+    feedbackService.save(FeedbackMapper.toModel(userId, developerId, draft));
 
     logger.info("Exit.");
   }
