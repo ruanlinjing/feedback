@@ -13,7 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * Created by umasuo on 17/6/27.
+ * Feedback content.
  */
 @Data
 @Entity
@@ -49,12 +49,6 @@ public class Content {
    */
   @Column
   private String ownerId;
-
-  /**
-   * Instantiates a new Content.
-   */
-  public Content() {
-  }
 
   /**
    * Instantiates a new Content.

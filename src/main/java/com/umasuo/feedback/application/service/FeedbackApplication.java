@@ -8,7 +8,6 @@ import com.umasuo.feedback.domain.model.Content;
 import com.umasuo.feedback.domain.model.Feedback;
 import com.umasuo.feedback.domain.service.FeedbackService;
 import com.umasuo.feedback.infrastructure.enums.FeedbackStatus;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,19 +17,34 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
 /**
- * Created by umasuo on 17/6/27.
+ * Feedback application.
  */
 @Service
 public class FeedbackApplication {
 
-  private static final Logger logger = LoggerFactory.getLogger(FeedbackApplication.class);
+  /**
+   * Logger.
+   */
+  private static final Logger LOGGER = LoggerFactory.getLogger(FeedbackApplication.class);
 
+  /**
+   * Feedback service.
+   */
   @Autowired
   private transient FeedbackService service;
 
+  /**
+   * Add content.
+   *
+   * @param id
+   * @param contentStr
+   * @param developerId
+   * @param userId
+   * @return
+   */
   @Transactional
   public FeedbackView addContent(String id, String contentStr, String developerId, String userId) {
-    logger.debug("Enter. id: {}, contentStr: {}.", id, contentStr);
+    LOGGER.debug("Enter. id: {}, contentStr: {}.", id, contentStr);
 
     Feedback feedback = service.get(id);
 
@@ -42,55 +56,75 @@ public class FeedbackApplication {
 
     service.save(feedback);
 
-    logger.debug("Exit. saved: {}.", feedback);
+    LOGGER.debug("Exit. saved: {}.", feedback);
     return FeedbackMapper.toView(feedback);
   }
 
+  /**
+   * Add developer content.
+   *
+   * @param contentStr
+   * @param developerId
+   * @param feedback
+   */
   private void addDeveloperContent(String contentStr, String developerId, Feedback feedback) {
-    logger.debug("Enter. contentStr: {}, developerId: {}, feedback: {}.",
-        contentStr, developerId, feedback.getId());
+    LOGGER.debug("Enter. contentStr: {}, developerId: {}, feedback: {}.",
+      contentStr, developerId, feedback.getId());
 
     if (!developerId.equals(feedback.getDeveloperId())) {
-      logger.debug("Can not add content to feedback: {} not belong to developer: {}.",
-          feedback.getId(), developerId);
+      LOGGER.debug("Can not add content to feedback: {} not belong to developer: {}.",
+        feedback.getId(), developerId);
       throw new AuthFailedException("Feedback not belong to developer");
     }
 
-    insertContent(feedback,  new Content(contentStr, developerId));
+    insertContent(feedback, new Content(contentStr, developerId));
 
     feedback.setDeveloperStatus(FeedbackStatus.VIEWED);
     feedback.setUserStatus(FeedbackStatus.UNVIEWED);
 
-    logger.debug("Exit.");
+    LOGGER.debug("Exit.");
   }
 
+  /**
+   * Add user content.
+   *
+   * @param contentStr
+   * @param userId
+   * @param feedback
+   */
   private void addUserContent(String contentStr, String userId, Feedback feedback) {
-    logger.debug("Enter. contentStr: {}, userId: {}, feedback: {}.",
-        contentStr, userId, feedback);
+    LOGGER.debug("Enter. contentStr: {}, userId: {}, feedback: {}.",
+      contentStr, userId, feedback);
 
     if (!userId.equals(feedback.getUserId())) {
-      logger.debug("Can not add content to feedback: {} not belong to user: {}.",
-          feedback.getId(), userId);
+      LOGGER.debug("Can not add content to feedback: {} not belong to user: {}.",
+        feedback.getId(), userId);
       throw new AuthFailedException("Feedback not belong to user");
     }
 
-    insertContent(feedback,  new Content(contentStr, userId));
+    insertContent(feedback, new Content(contentStr, userId));
 
     feedback.setDeveloperStatus(FeedbackStatus.UNVIEWED);
     feedback.setUserStatus(FeedbackStatus.VIEWED);
 
-    logger.debug("Exit.");
+    LOGGER.debug("Exit.");
   }
 
+  /**
+   * Insert content.
+   *
+   * @param feedback
+   * @param content
+   */
   private void insertContent(Feedback feedback, Content content) {
-    logger.debug("Enter. feedback: {}, content: {}.", feedback.getId(), content);
+    LOGGER.debug("Enter. feedback: {}, content: {}.", feedback.getId(), content);
 
-    if (feedback.getContents() != null) {
-      feedback.getContents().add(content);
-    } else {
+    if (feedback.getContents() == null) {
       feedback.setContents(Lists.newArrayList(content));
+    } else {
+      feedback.getContents().add(content);
     }
 
-    logger.debug("Exit.");
+    LOGGER.debug("Exit.");
   }
 }

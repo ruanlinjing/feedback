@@ -14,35 +14,53 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * Created by umasuo on 17/6/27.
+ * Feedback service.
  */
 @Service
 public class FeedbackService {
 
-  private static final Logger logger = LoggerFactory.getLogger(FeedbackService.class);
+  /**
+   * Logger.
+   */
+  private static final Logger LOGGER = LoggerFactory.getLogger(FeedbackService.class);
 
+  /**
+   * Feedback repository.
+   */
   @Autowired
   private transient FeedbackRepository feedbackRepository;
 
+  /**
+   * Save feedback.
+   *
+   * @param feedback
+   * @return
+   */
   public Feedback save(Feedback feedback) {
-    logger.debug("Enter. feedback: {}.", feedback);
+    LOGGER.debug("Enter. feedback: {}.", feedback);
 
     Feedback saved = feedbackRepository.save(feedback);
 
-    logger.debug("Exit. savedFeedback: {}.", saved);
+    LOGGER.debug("Exit. savedFeedback: {}.", saved);
     return saved;
   }
 
+  /**
+   * Get feedback by id.
+   *
+   * @param id
+   * @return
+   */
   public Feedback get(String id) {
-    logger.debug("Enter. id: {}.", id);
+    LOGGER.debug("Enter. id: {}.", id);
 
     Feedback feedback = feedbackRepository.findOne(id);
     if (feedback == null) {
-      logger.debug("Feedback: {} not exist.", id);
+      LOGGER.debug("Feedback: {} not exist.", id);
       throw new NotExistException("Feedback not exist: " + id);
     }
 
-    logger.debug("Exit. feedback: {}.", feedback);
+    LOGGER.debug("Exit. feedback: {}.", feedback);
     return feedback;
   }
 
@@ -57,9 +75,9 @@ public class FeedbackService {
    */
   public List<Feedback> getByDeveloper(String developerId, String userId, FeedbackStatus status,
                                        FeedbackType
-                                           type) {
-    logger.debug("Enter. developerId: {}, userId: {}, status: {}, type: {}.", developerId,
-        userId, status, type);
+                                         type) {
+    LOGGER.debug("Enter. developerId: {}, userId: {}, status: {}, type: {}.", developerId,
+      userId, status, type);
 
     Feedback feedback = new Feedback();
     feedback.setDeveloperId(developerId);
@@ -68,7 +86,7 @@ public class FeedbackService {
     Example<Feedback> example = Example.of(feedback);
     List<Feedback> feedbackList = feedbackRepository.findAll(example);
 
-    logger.debug("Exit. feedbackSize: {}.", feedbackList.size());
+    LOGGER.debug("Exit. feedbackSize: {}.", feedbackList.size());
     return feedbackList;
   }
 
@@ -80,14 +98,14 @@ public class FeedbackService {
    * @return 反馈列表
    */
   public List<Feedback> getByUser(String userId) {
-    logger.debug("Enter. userId: {}.", userId);
+    LOGGER.debug("Enter. userId: {}.", userId);
 
     Feedback feedback = new Feedback();
     feedback.setUserId(userId);
     Example<Feedback> example = Example.of(feedback);
     List<Feedback> feedbackList = feedbackRepository.findAll(example);
 
-    logger.debug("Exit. feedbackSize: {}.", feedbackList.size());
+    LOGGER.debug("Exit. feedbackSize: {}.", feedbackList.size());
     return feedbackList;
   }
 }

@@ -25,7 +25,7 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 /**
- * Created by umasuo on 17/6/27.
+ * Feedback.
  */
 @Data
 @Entity
@@ -56,6 +56,9 @@ public class Feedback {
   @Column(name = "last_modified_at")
   private Long lastModifiedAt;
 
+  /**
+   * Feedback version.
+   */
   @Version
   private Long version;
 
@@ -90,14 +93,26 @@ public class Feedback {
   @Enumerated(EnumType.STRING)
   private FeedbackType type;
 
+  /**
+   * Contents.
+   */
   @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
   @OrderBy("created_at ASC")
   private List<Content> contents;
 
+  /**
+   * Title.
+   */
   private String title;
 
+  /**
+   * Phone.
+   */
   private String phone;
 
+  /**
+   * Email
+   */
   private String email;
 
 }
